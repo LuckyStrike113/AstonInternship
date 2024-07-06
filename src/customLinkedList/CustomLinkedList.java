@@ -1,5 +1,7 @@
 package customLinkedList;
 
+import CustomList.CustomList;
+
 /**
  * Данный класс является домашним заданием на интенсиве по Java от компании Aston.
  * Реализация своего LinkedList(не потокобезопасные методы: добавить элемент, добавить элемент по индексу, получить элемент, удалить элемент,
@@ -8,7 +10,7 @@ package customLinkedList;
  * @param <E> тип элементов хранящихся в коллекции
  * @author Дарвеш Назар.
  */
-public class CustomLinkedList<E> {
+public class CustomLinkedList<E> implements CustomList<E> {
     private Node<E> head;
     private Node<E> tail;
     private int size;
@@ -20,9 +22,11 @@ public class CustomLinkedList<E> {
     private static class Node<E> {
         E element;
         Node<E> next;
-        Node(E element, Node<E> next) {
+        Node<E> prev;
+        Node(Node<E> prev, E element, Node<E> next) {
             this.element = element;
             this.next = next;
+            this.prev = prev;
         }
     }
     /**
@@ -36,16 +40,19 @@ public class CustomLinkedList<E> {
 
     /**
      * Добавляет элемент в конец CustomLinkedList.
-     * @param element добавляемый элемент.
+     * @param e добавляемый элемент.
      */
-    public void add(E element) {
-        Node<E> newNode = new Node<>(element, null);
-        if (tail == null) {
-            head = newNode;
-            tail = newNode;
+    public void add(E e) {
+        if (head == null && tail == null) {
+            head = new Node<>(null, e, null);
+            tail = head;
+        } else if (head == tail){
+            tail = new Node<>(head, e, null);
+            head.next = tail;
         } else {
-            tail.next = newNode;
-            tail = newNode;
+            Node<E> temp = tail;
+            tail = new Node<>(temp, e, null);
+            temp.next = tail;
         }
         size++;
     }
@@ -74,23 +81,19 @@ public class CustomLinkedList<E> {
     /**
      * Добавляет элемент по индексу.
      * @param index индекс, по которому вставляется элемент.
-     * @param element добавляемый элемент.
+     * @param e добавляемый элемент.
      */
-    public void add(int index, E element) {
+    public void add(int index, E e) {
         checkIndex(index);
+        Node<E> temp = getNode(index);
+        Node<E> tempPrev = temp.prev;
+        Node<E> newE = new Node<>(temp.prev, e, temp);
+        if(tempPrev != null) {
+            tempPrev.next = newE;
+        }
+        temp.prev = newE;
         if (index == 0) {
-            Node<E> newNode = new Node<>(element, head);
-            head = newNode;
-            if (size == 0) {
-                tail = newNode;
-            }
-        } else {
-            Node<E> prevNode = getNode(index - 1);
-            Node<E> newNode = new Node<>(element, prevNode.next);
-            prevNode.next = newNode;
-            if (newNode.next == null) {
-                tail = newNode;
-            }
+            head = newE;
         }
         size++;
     }
@@ -106,10 +109,10 @@ public class CustomLinkedList<E> {
 
     /**
      * Удаляет элемент по указанному индексу.
+     *
      * @param index индекс удоляемого элемента.
-     * @return удаленный элемент.
      */
-    public E remove(int index) {
+    public void remove(int index) {
         checkIndex(index);
         Node<E> removedNode;
         if (index == 0) {
@@ -127,7 +130,6 @@ public class CustomLinkedList<E> {
             }
         }
         size--;
-        return removedNode.element;
     }
 
     /**

@@ -1,6 +1,8 @@
 package customArrayList;
 
 
+import CustomList.CustomList;
+
 /**
  * Данный класс является домашним заданием на интенсиве по Java от компании Aston.
  * Реализация своего ArrayList(не потокобезопасные методы: добавить элемент,
@@ -10,7 +12,8 @@ package customArrayList;
  * @param <E> тип элементов хранящихся в массиве
  * @author Дарвеш Назар.
  */
-public class CustomArrayList<E> {
+@SuppressWarnings("ALL")
+public class CustomArrayList<E> implements CustomList<E> {
     /**
      * Начальная емкость по умолчанию.
      */
@@ -19,7 +22,7 @@ public class CustomArrayList<E> {
     /**
      * Текущая емкость.
      */
-    private int capacity;
+    private final int capacity;
     /**
      * Массив объектов, для хранения элементов.
      */
@@ -87,9 +90,9 @@ public class CustomArrayList<E> {
      * @param index проверяемый индекс.
      */
     private void checkIndex (int index){
-        if(index >= capacity || index < 0) {
+        if(index >= size || index < 0) {
             throw new IndexOutOfBoundsException("Index " + index +
-                    " is out of bounds for array of length " + capacity);
+                    " out of bounds for length " + size);
         }
     }
     /**
@@ -99,17 +102,16 @@ public class CustomArrayList<E> {
      */
     @SuppressWarnings("ReassignedVariable")
     public void add(int index, E e) {
+        size++;
         checkIndex(index);
         expendArray();
 
-        Object temp = e, temp2;
-        for(int i = index; i <= size; i++) {
+        E temp = e, temp2;
+        for(int i = index; i < size; i++) {
             temp2 = array[i];
-            //noinspection unchecked
-            array[i] = (E) temp;
+            array[i] = temp;
             temp = temp2;
         }
-        size++;
     }
     /**
      * Полностью очищает CustomArrayList, устанавливает емкость по умолчанию.
@@ -118,6 +120,10 @@ public class CustomArrayList<E> {
     public void clear(){
         array = (E[]) new Object[DEFAULT_CAPACITY];
         size = 0;
+    }
+
+    public int size() {
+        return 0;
     }
 
     /**
@@ -133,7 +139,7 @@ public class CustomArrayList<E> {
      * Удаление элемента по индексу.
      * @param index индекс удаляемого элемента.
      */
-    public void removeByIndex(int index) {
+    public void remove(int index) {
         checkIndex(index);
         int moved = size-index-1;
         System.arraycopy(array, index + 1, array, index, moved);
@@ -150,7 +156,7 @@ public class CustomArrayList<E> {
     public void removeByValue(E value) {
         for (int i = 0; i < size; i++) {
             if (array[i].equals(value)) {
-                removeByIndex(i);
+                remove(i);
             }
         }
     }
@@ -191,33 +197,31 @@ public class CustomArrayList<E> {
         int compare(E o1, E o2);
     }
 
-    /**
-     * CustomToString.
-     * @return возвращает строковое представление массива, находящийся "под капотом", включая null значения, для проверки работы CustomArrayList.
-     */
-    public String toString() {
-        return "CustomArrayList{" +
-                "array=" + CustomArrayList.toString(array) +
-                '}';
-    }
+//    /**
+//     * CustomToString.
+//     * @return возвращает строковое представление массива, находящийся "под капотом", включая null значения, для проверки работы CustomArrayList.
+//     */
+//    public String toString() {
+//        return "CustomArrayList{" +
+//                "array=" + CustomArrayList.toString(array) +
+//                '}';
+//    }
 
     /**
      * CustomToString.
      * @param a массив CustomArrayList.
      * @return вовзращает строковое представление массива.
      */
-    public static String toString(Object[] a) {
-        if (a == null)
-            return "null";
+    public String toString() {
 
-        int iMax = a.length - 1;
+        int iMax = size - 1;
         if (iMax == -1)
             return "[]";
 
         StringBuilder b = new StringBuilder();
         b.append('[');
         for (int i = 0; ; i++) {
-            b.append(String.valueOf(a[i]));
+            b.append(String.valueOf(array[i]));
             if (i == iMax)
                 return b.append(']').toString();
             b.append(", ");
