@@ -1,7 +1,7 @@
 package customArrayList;
 
 
-import CustomList.CustomList;
+import customList.CustomList;
 
 /**
  * Данный класс является домашним заданием на интенсиве по Java от компании Aston.
