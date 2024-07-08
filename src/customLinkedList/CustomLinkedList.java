@@ -1,6 +1,7 @@
 package customLinkedList;
 
 import customList.CustomList;
+import customList.MyComparator;
 
 /**
  * Данный класс является домашним заданием на интенсиве по Java от компании Aston.
@@ -226,14 +227,6 @@ public class CustomLinkedList<E> implements CustomList<E> {
      */
     public int size() {
         return size;
-    }
-
-    /**
-     * Интерфейс для сравнения элементов.
-     * @param <E> тип элементов, которые сравниваются
-     */
-    public interface MyComparator<E> {
-        int compare(E o1, E o2);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package customList;
 
+
 public interface CustomList<E> {
     /**
      * Возвращает количество элементов в этом списке.
@@ -36,5 +37,11 @@ public interface CustomList<E> {
      * @param index индекс.
      */
     void remove(int index);
+
+    /**
+     * Сортирует элементы коллекии в естественном порядке.
+     * @param c компоратор.
+     */
+    void sort(MyComparator<? super E> c);
 
 }

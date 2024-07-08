@@ -2,6 +2,7 @@ package customArrayList;
 
 
 import customList.CustomList;
+import customList.MyComparator;
 
 /**
  * Данный класс является домашним заданием на интенсиве по Java от компании Aston.
@@ -188,24 +189,6 @@ public class CustomArrayList<E> implements CustomList<E> {
             array[j + 1] = key;
         }
     }
-    /**
-     * Интерфейс для сравнения элементов.
-     *
-     * @param <E> тип элементов, которые сравниваются
-     */
-    public interface MyComparator<E> {
-        int compare(E o1, E o2);
-    }
-
-//    /**
-//     * CustomToString.
-//     * @return возвращает строковое представление массива, находящийся "под капотом", включая null значения, для проверки работы CustomArrayList.
-//     */
-//    public String toString() {
-//        return "CustomArrayList{" +
-//                "array=" + CustomArrayList.toString(array) +
-//                '}';
-//    }
 
     /**
      * CustomToString.
