@@ -39,6 +39,12 @@ public interface CustomList<E> {
     void remove(int index);
 
     /**
+     * Удаление элемента по значению.
+     * @param e значение искомого элемента.
+     */
+    void removeByValue(E e);
+
+    /**
      * Сортирует элементы коллекии в естественном порядке.
      * @param c компоратор.
      */

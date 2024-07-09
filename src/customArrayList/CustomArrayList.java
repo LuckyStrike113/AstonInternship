@@ -23,7 +23,7 @@ public class CustomArrayList<E> implements CustomList<E> {
     /**
      * Текущая емкость.
      */
-    private final int capacity;
+    private int capacity;
     /**
      * Массив объектов, для хранения элементов.
      */
@@ -74,6 +74,7 @@ public class CustomArrayList<E> implements CustomList<E> {
             Object[] newArray = new Object[newCapacity];
             System.arraycopy(array, 0, newArray, 0, array.length);
             array = (E[]) newArray;
+            capacity = newCapacity;
         }
     }
     /**
@@ -123,8 +124,12 @@ public class CustomArrayList<E> implements CustomList<E> {
         size = 0;
     }
 
+    /**
+     * Возвращает количество элементов коллекции.
+     * @return количество элементов коллекции.
+     */
     public int size() {
-        return 0;
+        return size;
     }
 
     /**
@@ -145,19 +150,18 @@ public class CustomArrayList<E> implements CustomList<E> {
         int moved = size-index-1;
         System.arraycopy(array, index + 1, array, index, moved);
         size--;
-        for (int i = size; i <= capacity; i++){
-            array[i] = null;
-        }
     }
 
     /**
      * Удаление элемента по значению.
+     *
      * @param value значение удаляемого элемента.
      */
     public void removeByValue(E value) {
         for (int i = 0; i < size; i++) {
             if (array[i].equals(value)) {
                 remove(i);
+                break;
             }
         }
     }

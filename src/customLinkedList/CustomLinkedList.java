@@ -134,6 +134,23 @@ public class CustomLinkedList<E> implements CustomList<E> {
     }
 
     /**
+     * Удаление элемента по значению.
+     * @param e искомое значение.
+     */
+    public void removeByValue(E e) {
+        Node<E> current = head;
+        int index = 0;
+        for (int i = 0; i < size; i++) {
+            if (current.element.equals(e)) {
+                index = i;
+                break;
+            }
+            current = current.next;
+        }
+        remove(index);
+    }
+
+    /**
      * Очищает список.
      */
     public void clear() {
